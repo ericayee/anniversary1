@@ -1,0 +1,46 @@
+---
+title: "Anniversary Analysis"
+author: "Erica Yee"
+date: "1/29/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r}
+# get data
+library(rvest)
+
+message_3 <- read_html("C:/Users/eeyus/GitHub/anniversary1/messages/inbox/BenFickes_cw7Pu7TBsQ/message_3.html")
+```
+
+
+```{r}
+# create dataframe for results
+df = data.frame(name = character(),time = character())
+
+```
+
+```{r}
+# save data to df
+message_block <- html_nodes(div, ".uiBoxWhite")
+times <- html_nodes(blocks, xpath='//*[contains(concat( " ", @class, " " ), concat( " ", "_2lem", " " ))]')
+names <- html_nodes(blocks, xpath='//*[contains(concat( " ", @class, " " ), concat( " ", "_2lel", " " ))]')
+
+df = data.frame(
+  times,
+  names
+)
+
+```
+
+
+
