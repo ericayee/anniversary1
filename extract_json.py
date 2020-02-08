@@ -16,7 +16,7 @@ jsonfiles = ['messages/inbox/BenFickes_cw7Pu7TBsQ/message_1.json', 'messages/inb
 #             # print('%s %s %s' % (timestamp, date, time))
 #             row = [timestamp, date, time, name]
 
-with open(csvfilename, 'w') as csvfile:
+with open(csvfilename, 'w', newline='') as csvfile:
     writer = csv.writer(csvfile)
     header = ['timestamp', 'date', 'time', 'name']
     writer.writerow(header)

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Assignment 6-2</title>
+
+  <style>
+    .axisLabel {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 16pt;
+      font-weight: bold;
+    }
+
+    .axis {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 14pt;
+    }
+
+    div.tooltip {
+      position: absolute;
+      text-align: center;
+      width: 30px;
+      height: 20px;
+      padding: 2px;
+      font: 14pt;
+      font-family: Arial;
+      background: lightgray;
+      border: 0px;
+      border-radius: 4px;
+      pointer-events: none;
+    }
+
+  </style>
+
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+</head>
+<body>
+  <script>
+
+    var width = 1000;
+    var height = 500;
+    var margin = {
+      top: 25,
+      left: 75,
+      right: 25,
+      bottom: 75
+    };
+
+    var svg = d3.select("body") // css selector
+      .append("svg") // can be any valid html tag name
+      .attr("width", width)
+      .attr("height", height);
+
+    var data = [
+      {hour: 0, temperature: 37},
+      {hour: 1, temperature: 37},
+      {hour: 2, temperature: 39},
+      {hour: 3, temperature: 40},
+      {hour: 4, temperature: 41},
+      {hour: 5, temperature: 40},
+      {hour: 6, temperature: 40},
+      {hour: 7, temperature: 39},
+      {hour: 8, temperature: 40},
+      {hour: 9, temperature: 40},
+      {hour: 10, temperature: 41},
+      {hour: 11, temperature: 42},
+      {hour: 12, temperature: 43},
+      {hour: 13, temperature: 43},
+      {hour: 14, temperature: 44},
+      {hour: 15, temperature: 43},
+      {hour: 16, temperature: 42},
+      {hour: 17, temperature: 41},
+      {hour: 18, temperature: 40},
+      {hour: 19, temperature: 38},
+      {hour: 20, temperature: 37},
+      {hour: 21, temperature: 35},
+      {hour: 22, temperature: 34},
+      {hour: 23, temperature: 33}
+    ];
+
+    var xScale = d3.scaleLinear()
+      .domain([0, 23])
+      .range([margin.left, width - margin.right]);
+
+    var yScale = d3.scaleLinear()
+      .domain([25, 45])
+      .range([height - margin.bottom, margin.top]);
+
+    var xAxis = svg.append("g")
+      .attr("transform", `translate(0, ${height - margin.bottom})`)
+      .call(d3.axisBottom().scale(xScale).ticks(24));
+
+    var yAxis = svg.append("g")
+      .attr("transform", `translate(${margin.left},0)`)
+      .call(d3.axisLeft().scale(yScale));
+
+    var line = d3.line()
+      .x(function(d) { return xScale(d.hour); })
+      .y(function(d) { return yScale(d.temperature); })
+      .curve(d3.curveCardinal); // d3.curveLinear, d3.curveStep, d3.curveBasis
+
+    var path = svg.append("path")
+      .datum(data)
+      .attr("d", line) // d stands for data, defines the shape of the line
+      .attr("stroke", "purple")
+      .attr("stroke-width", 4)
+      .attr("fill", "none");
+
+    var div = d3.select("body").append("div")
+      .attr("class", "tooltip")
+      .style("opacity", 0);
+
+    var circle = svg.selectAll("circle")
+      .data(data)
+      .enter()
+      .append("circle")
+        .attr("cx", function(d) { return xScale(d.hour); })
+        .attr("cy", function(d) { return yScale(d.temperature); })
+        .attr("r", 5)
+        .attr("fill", "#CC33FF")
+        .attr("stroke", "#FFFFFF")
+        .attr("stroke-width", 2)
+        .on("mouseover", function() {
+          d3.select(this)
+            .attr("fill", "pink")
+            .attr("r", 10)
+        }).on("mouseout", function() {
+          d3.select(this)
+            .attr("fill","#CC33FF")
+            .attr("r", 5)
+        })
+        .on("mouseover", function(d) {
+          div.transition()
+              .duration(200)
+              .style("opacity", .9);
+          div.html(d.temperature)
+              .style("left", (d3.event.pageX) + "px")
+              .style("top", (d3.event.pageY - 28) + "px");
+          })
+        .on("mouseout", function(d) {
+          div.transition()
+              .duration(500)
+              .style("opacity", 0);
+        });
+
+    var xLabel = svg.append("text")
+      .attr("class", "axisLabel")
+      .attr("x", width / 2)
+      .attr("y", height - 10)
+      .attr("text-anchor", "middle") // alignment
+      .text("Hour of day");
+
+    var yLabel = svg.append("text")
+      .attr("class", "axisLabel")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 20)
+      .attr("x", - height / 2)
+      .attr("text-anchor", "middle") // alignment
+      .text("Temperature");
+
+
+  </script>
+</body>
+</html>
