@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+  @import url('https://fonts.googleapis.com/css?family=Open+Sans&display=swap');
+
+  /* set the CSS */
+  body {
+    font-family: 'Open Sans', sans-serif;
+    max-width: 960px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+</style>
+
+<body>
+
+  <div id="#header">
+    <h1>Gifs</h1>
+  </div>
+
+  <div id="1-19">
+    <h2>January 2019</h2>
+    <h3>Erica</h3>
+    <div id="erica-1-19"></div>
+    <h3>Ben</h3>
+    <div id="ben-1-19"></div>
+  </div>
+
+  <div id="2-19">
+    <h2>February 2019</h2>
+    <h3>Erica</h3>
+    <div id="erica-2-19"></div>
+    <h3>Ben</h3>
+    <div id="ben-2-19"></div>
+  </div>
+
+  <div id="3-19">
+    <h2>March 2019</h2>
+    <h3>Erica</h3>
+    <div id="erica-3-19"></div>
+    <h3>Ben</h3>
+    <div id="ben-3-19"></div>
+  </div>
+
+  <div id="4-19">
+    <h2>April 2019</h2>
+    <h3>Erica</h3>
+    <div id="erica-4-19"></div>
+    <h3>Ben</h3>
+    <div id="ben-4-19"></div>
+  </div>
+
+  <div id="5-19">
+    <h2>May 2019</h2>
+    <h3>Erica</h3>
+    <div id="erica-5-19"></div>
+    <h3>Ben</h3>
+    <div id="ben-5-19"></div>
+  </div>
+
+  <div id="6-19">
+    <h2>June 2019</h2>
+    <h3>Erica</h3>
+    <div id="erica-6-19"></div>
+    <h3>Ben</h3>
+    <div id="ben-6-19"></div>
+  </div>
+
+  <div id="7-19">
+    <h2>July 2019</h2>
+    <h3>Erica</h3>
+    <div id="erica-7-19"></div>
+    <h3>Ben</h3>
+    <div id="ben-7-19"></div>
+  </div>
+
+  <div id="8-19">
+    <h2>August 2019</h2>
+    <h3>Erica</h3>
+    <div id="erica-8-19"></div>
+    <h3>Ben</h3>
+    <div id="ben-8-19"></div>
+  </div>
+
+  <div id="9-19">
+    <h2>September 2019</h2>
+    <h3>Erica</h3>
+    <div id="erica-9-19"></div>
+    <h3>Ben</h3>
+    <div id="ben-9-19"></div>
+  </div>
+
+  <div id="10-19">
+    <h2>October 2019</h2>
+    <h3>Erica</h3>
+    <div id="erica-10-19"></div>
+    <h3>Ben</h3>
+    <div id="ben-10-19"></div>
+  </div>
+
+  <div id="11-19">
+    <h2>November 2019</h2>
+    <h3>Erica</h3>
+    <div id="erica-11-19"></div>
+    <h3>Ben</h3>
+    <div id="ben-11-19"></div>
+  </div>
+
+  <div id="12-19">
+    <h2>December 2019</h2>
+    <h3>Erica</h3>
+    <div id="erica-12-19"></div>
+    <h3>Ben</h3>
+    <div id="ben-12-19"></div>
+  </div>
+
+  <div id="1-20">
+    <h2>January 2020</h2>
+    <h3>Erica</h3>
+    <div id="erica-1-20"></div>
+    <h3>Ben</h3>
+    <div id="ben-1-20"></div>
+  </div>
+
+  <script src="https://d3js.org/d3.v3.min.js"></script>
+
+  <script type="text/javascript" charset="utf-8">
+    d3.text("http://localhost:8080/gifsdata.csv", function(data) {
+      var parsedCSV = d3.csv.parseRows(data);
+
+      var jan19_Erica = [];
+      var feb19_Erica = [];
+      var mar19_Erica = [];
+      var apr19_Erica = [];
+      var may19_Erica = [];
+      var jun19_Erica = [];
+      var jul19_Erica = [];
+      var aug19_Erica = [];
+      var sep19_Erica = [];
+      var oct19_Erica = [];
+      var nov19_Erica = [];
+      var dec19_Erica = [];
+      var jan20_Erica = [];
+      var months_Erica = [jan19_Erica, feb19_Erica, mar19_Erica, apr19_Erica, may19_Erica, apr19_Erica, may19_Erica, jun19_Erica, jul19_Erica, aug19_Erica, sep19_Erica, oct19_Erica, nov19_Erica, dec19_Erica, jan20_Erica]
+
+      var jan19_Ben = [];
+      var feb19_Ben = [];
+      var mar19_Ben = [];
+      var apr19_Ben = [];
+      var may19_Ben = [];
+      var jun19_Ben = [];
+      var jul19_Ben = [];
+      var aug19_Ben = [];
+      var sep19_Ben = [];
+      var oct19_Ben = [];
+      var nov19_Ben = [];
+      var dec19_Ben = [];
+      var jan20_Ben = [];
+      var months_Ben = [jan19_Ben, feb19_Ben, mar19_Ben, apr19_Ben, may19_Ben, may19_Ben, jun19_Ben, jul19_Ben, aug19_Ben, sep19_Ben, oct19_Ben, nov19_Ben, dec19_Ben, jan20_Ben]
+
+      for (i = 1; i < parsedCSV.length; i++) {
+        // console.log(parsedCSV[i][1]);
+        switch (parsedCSV[i][1]) {
+          case "Jan-19":
+            if (parsedCSV[i][0] == "Ben Fickes") {
+              jan19_Ben.push(parsedCSV[i][3])
+            }
+            break;
+          case "Feb-19":
+            if (parsedCSV[i][0] == "Erica Yee") {
+              feb19_Erica.push(parsedCSV[i][3])
+            }
+            break;
+          case "Mar-19":
+            if (parsedCSV[i][0] == "Erica Yee") {
+              mar19_Erica.push(parsedCSV[i][3])
+            } else {
+              mar19_Ben.push(parsedCSV[i][3])
+            }
+            break;
+          case "Apr-19":
+            if (parsedCSV[i][0] == "Erica Yee") {
+              apr19_Erica.push(parsedCSV[i][3])
+            } else {
+              apr19_Ben.push(parsedCSV[i][3])
+            }
+            break;
+          case "May-19":
+            if (parsedCSV[i][0] == "Erica Yee") {
+              may19_Erica.push(parsedCSV[i][3])
+            } else {
+              may19_Ben.push(parsedCSV[i][3])
+            }
+            break;
+          case "Jun-19":
+            if (parsedCSV[i][0] == "Erica Yee") {
+              jun19_Erica.push(parsedCSV[i][3])
+            } else {
+              jun19_Ben.push(parsedCSV[i][3])
+            }
+            break;
+          case "Jul-19":
+            if (parsedCSV[i][0] == "Erica Yee") {
+              jul19_Erica.push(parsedCSV[i][3])
+            } else {
+              jul19_Ben.push(parsedCSV[i][3])
+            }
+            break;
+          case "Aug-19":
+            if (parsedCSV[i][0] == "Erica Yee") {
+              aug19_Erica.push(parsedCSV[i][3])
+            } else {
+              aug19_Ben.push(parsedCSV[i][3])
+            }
+            break;
+          case "Sep-19":
+            if (parsedCSV[i][0] == "Erica Yee") {
+              sep19_Erica.push(parsedCSV[i][3])
+            } else {
+              sep19_Ben.push(parsedCSV[i][3])
+            }
+            break;
+          case "Oct-19":
+            if (parsedCSV[i][0] == "Erica Yee") {
+              oct19_Erica.push(parsedCSV[i][3])
+            } else {
+              oct19_Ben.push(parsedCSV[i][3])
+            }
+            break;
+          case "Nov-19":
+            if (parsedCSV[i][0] == "Erica Yee") {
+              nov19_Erica.push(parsedCSV[i][3])
+            } else {
+              nov19_Ben.push(parsedCSV[i][3])
+            }
+            break;
+          case "Dec-19":
+            if (parsedCSV[i][0] == "Erica Yee") {
+              dec19_Erica.push(parsedCSV[i][3])
+            } else {
+              dec19_Ben.push(parsedCSV[i][3])
+            }
+            break;
+          case "Jan-20":
+            if (parsedCSV[i][0] == "Erica Yee") {
+              jan20_Erica.push(parsedCSV[i][3])
+            } else {
+              jan20_Ben.push(parsedCSV[i][3])
+            }
+            break;
+          default:
+            // code block
+        }
+      }
+
+      // console.log(jan20_Erica)
+      // console.log(jan20_Ben)
+
+      // var container = d3.select("#jan")
+      //   .append("h1")
+      //   .text("Gifs!")
+
+      // simple working
+      // const domElement = d3.select("#jan");
+      // for (i = 0; i < jan20_Ben.length; i++) {
+      //   domElement.append('img')
+      //     .attr('src', `messages/inbox/BenFickes_cw7Pu7TBsQ/gifs/${jan20_Ben[i]}`)
+      //     .attr('width', '100px');
+      // }
+
+      var curEl;
+      for (var i = 0; i < 12; i++) {
+        if (months_Erica[i].length > 0) {
+          for (j = 0; j < months_Erica[i].length; j++) {
+            curEl = d3.select(`#erica-${i+1}-19`)
+              .append('img')
+              .attr('src', `messages/inbox/BenFickes_cw7Pu7TBsQ/gifs/${months_Erica[i][j]}`)
+              .attr('width', '200px');
+          }
+        }
+        if (months_Ben[i].length > 0) {
+          for (j = 0; j < months_Ben[i].length; j++) {
+            curEl = d3.select(`#ben-${i+1}-19`)
+              .append('img')
+              .attr('src', `messages/inbox/BenFickes_cw7Pu7TBsQ/gifs/${months_Ben[i][j]}`)
+              .attr('width', '200px');
+          }
+        }
+      }
+      if (months_Erica[12].length > 0) {
+        for (i = 0; i < months_Erica[12].length; i++) {
+          curEl = d3.select(`#erica-1-20`)
+            .append('img')
+            .attr('src', `messages/inbox/BenFickes_cw7Pu7TBsQ/gifs/${months_Erica[12][i]}`)
+            .attr('width', '200px');
+        }
+      }
+      if (months_Ben[12].length > 0) {
+        for (i = 0; i < months_Ben[12].length; i++) {
+          curEl = d3.select(`#ben-1-20`)
+            .append('img')
+            .attr('src', `messages/inbox/BenFickes_cw7Pu7TBsQ/gifs/${months_Ben[12][i]}`)
+            .attr('width', '200px');
+        }
+      }
+
+    });
+  </script>
+  <!-- <img src="messages/inbox/BenFickes_cw7Pu7TBsQ/gifs/21535959_1730548430290973_1045327711939067904_n_372611003578622.gif" /> -->
+
+</body>
