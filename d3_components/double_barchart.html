@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+  @import url('https://fonts.googleapis.com/css?family=Open+Sans&display=swap');
+  /* set the CSS */
+  body {
+    font-family: 'Open Sans', sans-serif;
+  }
+
+  path {
+    /* stroke: steelblue;
+    stroke-width: 2;
+    fill: none; */
+  }
+
+  .axis path,
+  .axis line {
+    fill: none;
+    stroke: grey;
+    stroke-width: 1;
+    shape-rendering: crispEdges;
+  }
+
+  .axisLabel {
+    font-size: 12pt;
+    font-weight: bold;
+  }
+
+  .axis {
+    font-size: 10pt;
+  }
+
+  div.tooltip {
+    position: absolute;
+    text-align: center;
+    width: auto;
+    height: auto;
+    padding: 5px 10px;
+    font: 20pt;
+    border: 0px;
+    border-radius: 4px;
+    pointer-events: none;
+    color: white;
+  }
+
+</style>
+
+<body>
+  <div id="d3id"></div>
+  <!-- load the d3.js library -->
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+
+  <script>
+    // data
+    var models = [{
+        "month": "Jan '19",
+        "Erica": 385,
+        "Ben": 298
+      },
+      {
+        "month": "Feb '19",
+        "Erica": 975,
+        "Ben": 785
+      },
+      {
+        "month": "Mar '19",
+        "Erica": 1400,
+        "Ben": 1095
+      },
+      {
+        "month": "Apr '19",
+        "Erica": 1570,
+        "Ben": 1212
+      },
+      {
+        "month": "May '19",
+        "Erica": 893,
+        "Ben": 719
+      },
+      {
+        "month": "Jun '19",
+        "Erica": 1041,
+        "Ben": 849
+      },
+      {
+        "month": "Jul '19",
+        "Erica": 1219,
+        "Ben": 1019
+      },
+      {
+        "month": "Aug '19",
+        "Erica": 1656,
+        "Ben": 1416
+      },
+      {
+        "month": "Sep '19",
+        "Erica": 1762,
+        "Ben": 1570
+      },
+      {
+        "month": "Oct '19",
+        "Erica": 1497,
+        "Ben": 1330
+      },
+      {
+        "month": "Nov '19",
+        "Erica": 1310,
+        "Ben": 1120
+      },
+      {
+        "month": "Dec '19",
+        "Erica": 1361,
+        "Ben": 1156
+      },
+      {
+        "month": "Jan '20",
+        "Erica": 1135,
+        "Ben": 1156
+      }
+    ];
+
+    models = models.map(i => {
+      i.month = i.month;
+      return i;
+    });
+
+    var width = 960;
+    var height = 500;
+
+    var container = d3.select('#d3id'),
+      width = width,
+      height = height,
+      margin = {
+        top: 30,
+        right: 20,
+        bottom: 50,
+        left: 75
+      },
+      barPadding = .2,
+      axisTicks = {
+        qty: 10,
+        outerSize: 0
+      };
+
+    var svg = container
+      .append("svg")
+      .attr("width", width)
+      .attr("height", height)
+      .append("g")
+      .attr("transform", `translate(${margin.left},${margin.top})`);
+
+    var xScale0 = d3.scaleBand().range([0, width - margin.left - margin.right]).padding(barPadding);
+    var xScale1 = d3.scaleBand();
+    var yScale = d3.scaleLinear().range([height - margin.top - margin.bottom, 0]);
+
+    var xAxis = d3.axisBottom(xScale0).tickSizeOuter(axisTicks.outerSize);
+    var yAxis = d3.axisLeft(yScale).ticks(axisTicks.qty).tickSizeOuter(axisTicks.outerSize);
+
+    xScale0.domain(models.map(d => d.month));
+    xScale1.domain(['Erica', 'Ben']).range([0, xScale0.bandwidth()]);
+    yScale.domain([0, d3.max(models, d => d.Erica > d.Ben ? d.Erica : d.Ben)]);
+
+    var month = svg.selectAll(".month")
+      .data(models)
+      .enter().append("g")
+      .attr("class", "month")
+      .attr("transform", d => `translate(${xScale0(d.month)},0)`);
+
+    var div = d3.select("body").append("div")
+      .attr("class", "tooltip")
+      .style("opacity", 0);
+
+    /* Add Erica bars */
+    month.selectAll(".bar.Erica")
+      .data(d => [d])
+      .enter()
+      .append("rect")
+      .attr("class", "bar Erica")
+      .style("fill", "#404080")
+      .style("opacity", .6)
+      .attr("x", d => xScale1('Erica'))
+      .attr("y", d => yScale(d.Erica))
+      .attr("width", xScale1.bandwidth())
+      .attr("height", d => {
+        return height - margin.top - margin.bottom - yScale(d.Erica)
+      })
+      .on("mouseover", function(d) {
+        div.transition()
+            .duration(200)
+            .style("opacity", .9);
+        div.html('Erica: ' + d.Erica)
+            .style("left", (d3.event.pageX) + "px")
+            .style("top", (d3.event.pageY - 20) + "px")
+            .style("background", "rgb(147,112,219)");
+      })
+      .on("mouseout", function(d) {
+        div.transition()
+            .duration(500)
+            .style("opacity", 0);
+      });
+
+    /* Add Ben bars */
+    month.selectAll(".bar.Ben")
+      .data(d => [d])
+      .enter()
+      .append("rect")
+      .attr("class", "bar Ben")
+      .style("fill", "#69b3a2")
+      .style("opacity", .6)
+      .attr("x", d => xScale1('Ben'))
+      .attr("y", d => yScale(d.Ben))
+      .attr("width", xScale1.bandwidth())
+      .attr("height", d => {
+        return height - margin.top - margin.bottom - yScale(d.Ben)
+      })
+      .on("mouseover", function(d) {
+        div.transition()
+            .duration(200)
+            .style("opacity", .9);
+        div.html('Ben: ' + d.Ben)
+            .style("left", (d3.event.pageX) + "px")
+            .style("top", (d3.event.pageY - 20) + "px")
+            .style("background", "rgb(112,131,219)");
+      })
+      .on("mouseout", function(d) {
+        div.transition()
+            .duration(500)
+            .style("opacity", 0);
+      });
+
+    // Add the X Axis
+    svg.append("g")
+      .attr("class", "x axis")
+      .attr("transform", `translate(0,${height - margin.top - margin.bottom})`)
+      .call(xAxis);
+
+    // Add the Y Axis
+    svg.append("g")
+      .attr("class", "y axis")
+      .call(yAxis);
+
+    // Add x-axis label
+    svg.append("text")
+      .attr("class", "axisLabel")
+      .attr("x", width / 2)
+      .attr("y", height - 35)
+      .attr("text-anchor", "middle") // alignment
+      .text("Month (Jan 21, 2019 - Jan 20, 2020)");
+
+    // Add y-axis label
+    svg.append("text")
+      .attr("class", "axisLabel")
+      .attr("transform", "rotate(-90)")
+      .attr("y", -50)
+      .attr("x", -height / 2)
+      .attr("text-anchor", "middle") // alignment
+      .text("Messages");
+
+    // add title
+    svg.append("text")
+      .attr("class", "title")
+      .attr("x", (width / 2))
+      .attr("y", 0 - (margin.top / 2))
+      .attr("text-anchor", "middle")
+      .style("font-size", "18px")
+      .text("Message count per month");
+
+    // handmade legend
+    svg.append("circle").attr("cx", 20).attr("cy", 10).attr("r", 6).style("fill", "#404080").style("opacity", .6)
+    svg.append("circle").attr("cx", 20).attr("cy", 50).attr("r", 6).style("fill", "#69b3a2").style("opacity", .6)
+    svg.append("text").attr("x", 40).attr("y", 15).text("Erica").style("font-size", "14px").attr("alignment-baseline", "middle")
+    svg.append("text").attr("x", 40).attr("y", 35).text("Total messages: 16,204").style("font-size", "12px").attr("alignment-baseline", "middle")
+    svg.append("text").attr("x", 40).attr("y", 55).text("Ben").style("font-size", "14px").attr("alignment-baseline", "middle")
+    svg.append("text").attr("x", 40).attr("y", 75).text("Total messages: 13,725").style("font-size", "12px").attr("alignment-baseline", "middle")
+    svg.append("line")
+      .attr("x1", 40)
+      .attr("y1", 81)
+      .attr("x2", 170)
+      .attr("y2", 81)
+      .attr("stroke-width", 2)
+      .attr("stroke", "lightgray")
+    svg.append("text").attr("x", 40).attr("y", 95).text("Total: 29,929").style("font-size", "12px").attr("alignment-baseline", "middle")
+
+  </script>
+</body>
