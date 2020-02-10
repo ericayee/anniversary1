@@ -11,6 +11,19 @@
     text-align: center;
   }
 
+  #backbutton {
+    background: magenta;
+    opacity: .5;
+    padding: 5px 15px;
+    color: white;
+    width: 150px;
+    margin: 0 auto;
+    border: 2px solid magenta;
+    border-radius: 20px;
+    box-shadow: 5px 10px #888888;
+    font-size: 50px;
+    text-decoration: none;
+  }
 </style>
 
 <body>
@@ -18,6 +31,8 @@
   <div id="#header">
     <h1>Gifs</h1>
   </div>
+
+  <div id="#gifchart"></div>
 
   <div id="1-19">
     <h2>January 2019</h2>
@@ -123,10 +138,89 @@
     <div id="ben-13-19"></div>
   </div>
 
+  <br />
+  <br />
+
+  <a href="/index.html" id="backbutton">
+    BACK
+    </a>
+
+    <br />
+    <br />
+
   <script src="https://d3js.org/d3.v3.min.js"></script>
 
   <script type="text/javascript" charset="utf-8">
-    d3.text("http://localhost:8080/gifsdata.csv", function(data) {
+    // data
+    var gifdata = [{
+        "month": "Jan '19",
+        "Erica": 0,
+        "Ben": 1
+      },
+      {
+        "month": "Feb '19",
+        "Erica": 2,
+        "Ben": 0
+      },
+      {
+        "month": "Mar '19",
+        "Erica": 6,
+        "Ben": 3
+      },
+      {
+        "month": "Apr '19",
+        "Erica": 1,
+        "Ben": 1
+      },
+      {
+        "month": "May '19",
+        "Erica": 1,
+        "Ben": 0
+      },
+      {
+        "month": "Jun '19",
+        "Erica": 2,
+        "Ben": 1
+      },
+      {
+        "month": "Jul '19",
+        "Erica": 1,
+        "Ben": 3
+      },
+      {
+        "month": "Aug '19",
+        "Erica": 7,
+        "Ben": 4
+      },
+      {
+        "month": "Sep '19",
+        "Erica": 40,
+        "Ben": 22
+      },
+      {
+        "month": "Oct '19",
+        "Erica": 22,
+        "Ben": 9
+      },
+      {
+        "month": "Nov '19",
+        "Erica": 6,
+        "Ben": 0
+      },
+      {
+        "month": "Dec '19",
+        "Erica": 12,
+        "Ben": 9
+      },
+      {
+        "month": "Jan '20",
+        "Erica": 11,
+        "Ben": 5
+      }
+    ];
+
+    // d3.text("http://localhost:8080/gifsdata.csv", function(data) {
+    d3.text("gifsdata.csv", function(data) {
       var parsedCSV = d3.csv.parseRows(data);
 
       var jan19_Erica = [];
@@ -142,7 +236,7 @@
       var nov19_Erica = [];
       var dec19_Erica = [];
       var jan20_Erica = [];
-      var months_Erica = [jan19_Erica, feb19_Erica, mar19_Erica, apr19_Erica, may19_Erica, apr19_Erica, may19_Erica, jun19_Erica, jul19_Erica, aug19_Erica, sep19_Erica, oct19_Erica, nov19_Erica, dec19_Erica, jan20_Erica]
+      var months_Erica = [jan19_Erica, feb19_Erica, mar19_Erica, apr19_Erica, may19_Erica, jun19_Erica, jul19_Erica, aug19_Erica, sep19_Erica, oct19_Erica, nov19_Erica, dec19_Erica, jan20_Erica]
 
       var jan19_Ben = [];
       var feb19_Ben = [];
@@ -157,7 +251,7 @@
       var nov19_Ben = [];
       var dec19_Ben = [];
       var jan20_Ben = [];
-      var months_Ben = [jan19_Ben, feb19_Ben, mar19_Ben, apr19_Ben, may19_Ben, may19_Ben, jun19_Ben, jul19_Ben, aug19_Ben, sep19_Ben, oct19_Ben, nov19_Ben, dec19_Ben, jan20_Ben]
+      var months_Ben = [jan19_Ben, feb19_Ben, mar19_Ben, apr19_Ben, may19_Ben, jun19_Ben, jul19_Ben, aug19_Ben, sep19_Ben, oct19_Ben, nov19_Ben, dec19_Ben, jan20_Ben]
 
       for (i = 1; i < parsedCSV.length; i++) {
         // console.log(parsedCSV[i][1]);
@@ -288,23 +382,6 @@
           }
         }
       }
-      // if (months_Erica[12].length > 0) {
-      //   for (i = 0; i < months_Erica[12].length; i++) {
-      //     curEl = d3.select(`#erica-1-20`)
-      //       .append('img')
-      //       .attr('src', `messages/inbox/BenFickes_cw7Pu7TBsQ/gifs/${months_Erica[12][i]}`)
-      //       .attr('width', '200px');
-      //   }
-      // }
-      // if (months_Ben[12].length > 0) {
-      //   for (i = 0; i < months_Ben[12].length; i++) {
-      //     curEl = d3.select(`#ben-1-20`)
-      //       .append('img')
-      //       .attr('src', `messages/inbox/BenFickes_cw7Pu7TBsQ/gifs/${months_Ben[12][i]}`)
-      //       .attr('width', '200px');
-      //   }
-      // }
-
     });
   </script>
   <!-- <img src="messages/inbox/BenFickes_cw7Pu7TBsQ/gifs/21535959_1730548430290973_1045327711939067904_n_372611003578622.gif" /> -->

@@ -5,6 +5,9 @@
   /* set the CSS */
   body {
     font-family: 'Open Sans', sans-serif;
+    max-width: 960px;
+    margin: 0 auto;
+    text-align: center;
   }
 
   .axis path,
@@ -37,10 +40,51 @@
     color: white;
   }
 
+  #gifbutton {
+    background: lightblue;
+    padding: 5px 15px;
+    color: white;
+    width: 150px;
+    margin: 0 auto;
+    border: 2px solid lightblue;
+    border-radius: 20px;
+    box-shadow: 5px 10px #888888;
+    font-size: 50px;
+  }
+
+  a {
+    text-decoration: none;
+  }
+
 </style>
 
 <body>
+  <h1>Happy one-year anniversary!</h1>
+  <p>
+    Here's a look back on our first year together via an analysis of our messages.
+    </p>
+
   <div id="d3id"></div>
+
+  <br />
+  <br />
+
+  <div id="histogram"></div>
+
+  <br />
+  <br />
+
+  <p>
+    And finally what you really want...
+    </p>
+
+
+  <a href="/gifs_page.html" id="gifbutton">
+    GIFS
+    </a>
+
+<br />
+<br />
   <!-- load the d3.js library -->
   <script src="https://d3js.org/d3.v4.min.js"></script>
 
@@ -275,5 +319,137 @@
       .attr("stroke", "lightgray")
     svg.append("text").attr("x", 40).attr("y", 95).text("Total: 29,929").style("font-size", "12px").attr("alignment-baseline", "middle")
 
+  </script>
+
+  <script>
+    // set the dimensions and margins of the graph
+    var margin = {
+        top: 30,
+        right: 20,
+        bottom: 50,
+        left: 75
+      },
+      width = 960 - margin.left - margin.right,
+      height = 500 - margin.top - margin.bottom;
+
+    // append the svg object to the body of the page
+    var svg = d3.select("#histogram")
+      .append("svg")
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom)
+      .append("g")
+      .attr("transform",
+        "translate(" + margin.left + "," + margin.top + ")");
+
+    // get the data
+    // d3.csv("http://localhost:8080/d3_components/wordcounts.csv", function(data) {
+    d3.csv("/d3_components/wordcounts.csv", function(data) {
+
+      // X axis: scale and draw:
+      var x = d3.scaleLinear()
+        .domain([0, 400]) // can use this instead of 1000 to have the max of data: d3.max(data, function(d) { return +d.price })
+        .range([0, width]);
+      svg.append("g")
+        .attr("transform", "translate(0," + height + ")")
+        .call(d3.axisBottom(x));
+
+      // set the parameters for the histogram
+      var histogram = d3.histogram()
+        .value(function(d) {
+          return d.length_words;
+        }) // I need to give the vector of value
+        .domain(x.domain()) // then the domain of the graphic
+        .thresholds(x.ticks(40)); // then the numbers of bins
+
+      // And apply twice this function to data to get the bins.
+      var bins1 = histogram(data.filter(function(d) {
+        return d.name === "Erica Yee"
+      }));
+      var bins2 = histogram(data.filter(function(d) {
+        return d.name === "Ben Fickes"
+      }));
+
+      // Y axis: scale and draw:
+      var y = d3.scaleLinear()
+        .range([height, 0]);
+      y.domain([0, d3.max(bins1, function(d) {
+        return d.length;
+      })]); // d3.hist has to be called before the Y axis obviously
+      svg.append("g")
+        .call(d3.axisLeft(y));
+
+      // append the bars for series 1
+      svg.selectAll("rect")
+        .data(bins1)
+        .enter()
+        .append("rect")
+        .attr("x", 1)
+        .attr("transform", function(d) {
+          return "translate(" + x(d.x0) + "," + y(d.length) + ")";
+        })
+        .attr("width", function(d) {
+          return x(d.x1) - x(d.x0) - 1;
+        })
+        .attr("height", function(d) {
+          return height - y(d.length);
+        })
+        .style("fill", "#404080")
+        .style("opacity", 0.6)
+
+      // append the bars for series 2
+      svg.selectAll("rect2")
+        .data(bins2)
+        .enter()
+        .append("rect")
+        .attr("x", 1)
+        .attr("transform", function(d) {
+          return "translate(" + x(d.x0) + "," + y(d.length) + ")";
+        })
+        .attr("width", function(d) {
+          return x(d.x1) - x(d.x0) - 1;
+        })
+        .attr("height", function(d) {
+          return height - y(d.length);
+        })
+        .style("fill", "#69b3a2")
+        .style("opacity", 0.6)
+
+      // Handmade legend
+      svg.append("circle").attr("cx", 300).attr("cy", 30).attr("r", 6).style("fill", "#404080").style("opacity", .6)
+      svg.append("circle").attr("cx", 300).attr("cy", 95).attr("r", 6).style("fill", "#69b3a2").style("opacity", .6)
+      svg.append("text").attr("x", 320).attr("y", 35).text("Erica").style("font-size", "14px").attr("alignment-baseline", "middle")
+      svg.append("text").attr("x", 340).attr("y", 55).text("Average word count: 9.8").style("font-size", "12px").attr("alignment-baseline", "middle")
+      svg.append("text").attr("x", 340).attr("y", 75).text("Word count range: 1-354").style("font-size", "12px").attr("alignment-baseline", "middle")
+      svg.append("text").attr("x", 320).attr("y", 100).text("Ben").style("font-size", "14px").attr("alignment-baseline", "middle")
+      svg.append("text").attr("x", 340).attr("y", 120).text("Average word count: 12.8").style("font-size", "12px").attr("alignment-baseline", "middle")
+      svg.append("text").attr("x", 340).attr("y", 140).text("Word count range: 1-280").style("font-size", "12px").attr("alignment-baseline", "middle")
+
+      // Add x-axis label
+      svg.append("text")
+        .attr("class", "axisLabel")
+        .attr("x", width / 2)
+        .attr("y", height + 45)
+        .attr("text-anchor", "middle") // alignment
+        .text("Word count per message");
+
+      // Add y-axis label
+      svg.append("text")
+        .attr("class", "axisLabel")
+        .attr("transform", "rotate(-90)")
+        .attr("y", -50)
+        .attr("x", -height / 2)
+        .attr("text-anchor", "middle") // alignment
+        .text("Number of messages");
+
+      // add title
+      svg.append("text")
+        .attr("class", "title")
+        .attr("x", (width / 2))
+        .attr("y", 0 - (margin.top / 2))
+        .attr("text-anchor", "middle")
+        .style("font-size", "18px")
+        .text("Histogram of word count per message");
+
+    });
   </script>
 </body>
