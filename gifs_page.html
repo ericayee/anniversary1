@@ -115,12 +115,12 @@
     <div id="ben-12-19"></div>
   </div>
 
-  <div id="1-20">
+  <div id="13-19">
     <h2>January 2020</h2>
     <h3>Erica</h3>
-    <div id="erica-1-20"></div>
+    <div id="erica-13-19"></div>
     <h3>Ben</h3>
-    <div id="ben-1-20"></div>
+    <div id="ben-13-19"></div>
   </div>
 
   <script src="https://d3js.org/d3.v3.min.js"></script>
@@ -270,13 +270,13 @@
       // }
 
       var curEl;
-      for (var i = 0; i < 12; i++) {
+      for (var i = 0; i <= 12; i++) {
         if (months_Erica[i].length > 0) {
           for (j = 0; j < months_Erica[i].length; j++) {
             curEl = d3.select(`#erica-${i+1}-19`)
               .append('img')
               .attr('src', `messages/inbox/BenFickes_cw7Pu7TBsQ/gifs/${months_Erica[i][j]}`)
-              .attr('width', '200px');
+              .attr('height', '150px');
           }
         }
         if (months_Ben[i].length > 0) {
@@ -284,26 +284,26 @@
             curEl = d3.select(`#ben-${i+1}-19`)
               .append('img')
               .attr('src', `messages/inbox/BenFickes_cw7Pu7TBsQ/gifs/${months_Ben[i][j]}`)
-              .attr('width', '200px');
+              .attr('height', '150px');
           }
         }
       }
-      if (months_Erica[12].length > 0) {
-        for (i = 0; i < months_Erica[12].length; i++) {
-          curEl = d3.select(`#erica-1-20`)
-            .append('img')
-            .attr('src', `messages/inbox/BenFickes_cw7Pu7TBsQ/gifs/${months_Erica[12][i]}`)
-            .attr('width', '200px');
-        }
-      }
-      if (months_Ben[12].length > 0) {
-        for (i = 0; i < months_Ben[12].length; i++) {
-          curEl = d3.select(`#ben-1-20`)
-            .append('img')
-            .attr('src', `messages/inbox/BenFickes_cw7Pu7TBsQ/gifs/${months_Ben[12][i]}`)
-            .attr('width', '200px');
-        }
-      }
+      // if (months_Erica[12].length > 0) {
+      //   for (i = 0; i < months_Erica[12].length; i++) {
+      //     curEl = d3.select(`#erica-1-20`)
+      //       .append('img')
+      //       .attr('src', `messages/inbox/BenFickes_cw7Pu7TBsQ/gifs/${months_Erica[12][i]}`)
+      //       .attr('width', '200px');
+      //   }
+      // }
+      // if (months_Ben[12].length > 0) {
+      //   for (i = 0; i < months_Ben[12].length; i++) {
+      //     curEl = d3.select(`#ben-1-20`)
+      //       .append('img')
+      //       .attr('src', `messages/inbox/BenFickes_cw7Pu7TBsQ/gifs/${months_Ben[12][i]}`)
+      //       .attr('width', '200px');
+      //   }
+      // }
 
     });
   </script>
